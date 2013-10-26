@@ -2,12 +2,20 @@
 Timer code v1 originally written as distraction from learning, really ugly
 Timer code v2 written 02102012 2044 out of embarassment, much cleaner code
 Timer code v3 written 04102012 1337 to neaten up the render code
+Timer code v4 modified to accomodate JSON API. SQL-Wrestling done by null_ptr :)
 
-Code's commented to the max, so it should be pretty easy to understand.
-Additionally, it's JS, how hard can it be ;P
+Code's commented should be pretty easy to understand.
+It's JS, how hard can it be ;P
 
-You're welcome to copy this anywhere you like, make changes to it, make it do stupid stuff,
-just, whatever. See attached license.	--cbdev 2012
+
+USAGE
+-----
+If your document does not have a single DOM node reserved for displaying
+the timers, you need to modify timers.create to reflect your mode of operation
+(eg, adding a parameter indicating the node to insert the timer into).
+
+Other than that, calling timers.create will do all the creation work for you,
+after which you only need to call timers.run once to start the update thread.
 
   DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
                     Version 2, December 2004 
@@ -26,31 +34,33 @@ just, whatever. See attached license.	--cbdev 2012
 */
 
 
-var uniqueID=0;
-var timers=new Array();
+var timers={
+	instances:[],
 
-//Pad a string with another string - weird that JS doesn't have this natively
-function pad(str,padString,length){
-	str=''+str; //lol bugfix (casting input to string, else integer inputs would fail)
-	while(str.length<length){
-		str=padString+str;
-	}
-	return str;
-}
-
-
-//Create a Timer object to be stored
-function Timer(cause, end, message){
-	//generate unique id
-	this.id=uniqueID++;
+	//Pad a string with another string - weird that JS doesn't have this natively
+	pad:function(str,padString,length){
+		str=''+str; //lol bugfix (casting input to string, else integer inputs would fail)
+		while(str.length<length){
+			str=padString+str;
+		}
+		return str;
+	},
 	
-	//save data
-	this.cause=cause;
-	this.end=end;
-	this.message=message;
-
-	//render the html to display the timer
-	function renderTimer(){
+	//Create timer object
+	Timer:function(id, cause, end, message){
+		//store data
+		this.id=id;
+		this.cause=cause;
+		this.end=end;
+		this.message=message;
+		this.domNode=timers.createTimerDomNode(cause, end);
+		this.getUpdateNode=function(){return this.domNode.getElementsByClassName("timer-left")[0];};
+		this.getDomNode=function(){return this.domNode;};
+		this.updateTimer=timers.updateTimerInstance;
+	},
+	
+	//Create a single timer's DOM Node
+	createTimerDomNode:function(title, end){
 		//create the wrapper element to center the timer
 		var timerRoot=document.createElement('div');
 		timerRoot.setAttribute('class', 'timer-wrap');
@@ -61,15 +71,11 @@ function Timer(cause, end, message){
 		
 		//create title element
 		var timerTitle=document.createElement('h2');
-		timerTitle.innerHTML=this.cause;
+		timerTitle.innerHTML=title;
 		
 		//countdown display element
 		var timerDisplay=document.createElement('div');
-		timerDisplay.setAttribute('id','timer-'+this.id);
 		timerDisplay.setAttribute('class','timer-left');
-		
-		//store for update calls
-		this.updateTarget=timerDisplay;
 		
 		//timer end info
 		var timerInfo=document.createElement('span');
@@ -77,25 +83,25 @@ function Timer(cause, end, message){
 		timerInfo.innerHTML='left until';
 		timerInfo.appendChild(document.createElement('span'));
 		timerInfo.childNodes[1].setAttribute('style','float:right;');
-		timerInfo.childNodes[1].innerHTML=pad(this.end.getDate(),'0',2)+'.'+pad((this.end.getMonth()+1),'0',2)+'.'+this.end.getFullYear()+' '+pad(this.end.getHours(),'0',2)+':'+pad(this.end.getMinutes(),'0',2);
+		timerInfo.childNodes[1].innerHTML=timers.pad(end.getDate(),'0',2)+'.'+timers.pad((end.getMonth()+1),'0',2)+'.'+end.getFullYear()+' '+timers.pad(end.getHours(),'0',2)+':'+timers.pad(end.getMinutes(),'0',2);
 		
-		//cream it all together
+		//cram it all together
 		timerRoot.childNodes[0].appendChild(timerTitle);
 		timerRoot.childNodes[0].appendChild(timerDisplay);
 		timerRoot.childNodes[0].appendChild(timerInfo);
 		
-		//render to document
-		document.getElementById('main').appendChild(timerRoot);
-	}
+		return timerRoot;
+	},
 	
-	//update the timer
-	function updateTimer(){
+	//Timer instance update call implementation
+	updateTimerInstance:function(){
 		//calculate remaining time (milliseconds)
 		var timeLeft=this.end.getTime()-(new Date()).getTime();
+		var updateTarget=this.getUpdateNode();
 		
 		//display end message if needed
 		if(timeLeft<0){
-			this.updateTarget.innerHTML=this.message;
+			updateTarget.innerHTML=this.message;
 		}
 		else{
 			//get unit mode
@@ -109,52 +115,44 @@ function Timer(cause, end, message){
 			switch(maxUnit){
 				case "days":
 					//get remaining days
-					timeString+=pad(Math.floor(timeLeft/(24*60*60)),'0',2)+":";
+					timeString+=timers.pad(Math.floor(timeLeft/(24*60*60)),'0',2)+":";
 					timeLeft=timeLeft%(24*60*60);
 				case "hours":
 					//get remaining hours
-					timeString+=pad(Math.floor(timeLeft/(60*60)),'0',2)+":";
+					timeString+=timers.pad(Math.floor(timeLeft/(60*60)),'0',2)+":";
 					timeLeft=timeLeft%(60*60);
 				case "minutes":
 					//get remaining minutes
-					timeString+=pad(Math.floor(timeLeft/60),'0',2)+":";
+					timeString+=timers.pad(Math.floor(timeLeft/60),'0',2)+":";
 					timeLeft=timeLeft%60;
 				case "seconds":
 					//just use whats left
-					timeString+=pad(timeLeft,'0',2);
-					this.updateTarget.innerHTML=timeString;
+					timeString+=timers.pad(timeLeft,'0',2);
+					updateTarget.innerHTML=timeString;
 					break;
 				default:
 					//yay you edited the dropdown. pretty cool guy.
-					this.updateTarget.innerHTML="You broke it.";
+					updateTarget.innerHTML="You broke it.";
 			}
 		}
+	},
+	
+	//Create a single timer instance and render it to the DOM
+	create:function(id, cause, end, message){
+		var instance=new timers.Timer(id,cause,end,message);
+		//FIXME this should probably test whether the id already exists. not needed as of yet.
+		timers.instances.push(instance);
+		document.getElementById("timer-main").appendChild(instance.getDomNode());
+	},
+	
+	//Start the update thread for all instances
+	run:function(){
+		timers.updateAll();
+		setInterval(timers.updateAll,1000);
+	},
+	
+	//Update all active instances
+	updateAll:function(){
+		timers.instances.forEach(function(i){i.updateTimer();});
 	}
-	
-	this.render=renderTimer;
-	this.update=updateTimer;
-}
-
-//Create a new timer
-function timerCreate(cause,end,message){
-	//create new timer
-	var timer=new Timer(cause, end, message);
-	timers[timer.id]=timer;
-	
-	//call print
-	timer.render();
-	
-	//call update
-	timer.update();
-}
-
-//Continuous update function
-function runTimers(){
-	setInterval(function(){
-		//iterate over timers
-		for(var i=0;i<timers.length;i++){
-			//call update
-			timers[i].update();
-		}
-	},1000);
-}
+};

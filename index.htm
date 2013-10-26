@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+		<link rel="icon" href="static/favicon.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="static/timers.css" />
+		<script type="text/javascript" src="static/ajax.js"></script>
+		<script type="text/javascript" src="static/timers.js"></script>
+		<script type="text/javascript" src="static/glue.js"></script>
+		<script type="text/javascript" src="static/plusone.js"></script>
+		<meta name="description" content="KITInfo Timers - Countdowns zu Klausuren & Events für Infos am KIT." />
+		<meta name="keywords" content="kit, informatik, timer, zeit, klausuren, irc, chat, kitinfo" />
+		<meta name="robots" content="index,follow" />
+		<title>KITInfo Timers</title>
+	</head>
+	<body onload="timerGlue.init();">
+		<div id="head">
+			<span style="position:absolute;right:0.5em;text-align:center;">
+				Since ancient times, people have used timers. 
+				Now you can, too! <br /> With the magical timers of <em>timers.kitinfo.de</em><br />
+				<span style="float:right;">Brought to you by <a href="http://kitinfo.de/">#kitinfo</a></span>
+			</span>
+			<h1>Timers</h1><br/>
+			<div style="padding-top:0.2em;float:left;position:absolute;">
+				Max. Unit<br />
+				<select id="maxunit">
+					<option value="days" selected>Days</option>
+					<option value="hours">Hours</option>
+					<option value="minutes">Minutes</option>
+					<option value="seconds">Seconds</option>
+				</select>
+				<br />
+				<br />
+				<div class="g-plusone" data-size="tall" data-height="24" data-annotation="none" data-href="http://timers.kitinfo.de/"><a style="text-decoration:none;" onClick="enablePlusOne();" href="#">Enable +1</a></div>
+				<br/>
+				<em>API Status:</em><br/>
+				<div id="status-info">Waiting...</div><br/>
+				<br/>
+			</div>
+		</div>
+		
+		<div id="timer-main">
+		</div>
+	 </body>
+</html>
+
+
