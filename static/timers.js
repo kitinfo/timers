@@ -3,6 +3,7 @@ Timer code v1 originally written as distraction from learning, really ugly
 Timer code v2 written 02102012 2044 out of embarassment, much cleaner code
 Timer code v3 written 04102012 1337 to neaten up the render code
 Timer code v4 modified to accomodate JSON API. SQL-Wrestling done by null_ptr :)
+Timer code v4.1 updated to accomodate selection & filtering
 
 Code's commented should be pretty easy to understand.
 It's JS, how hard can it be ;P
@@ -54,6 +55,7 @@ var timers={
 		this.end=end;
 		this.message=message;
 		this.domNode=timers.createTimerDomNode(cause, end);
+		this.domNode.getElementsByClassName("timer")[0].setAttribute("data-id",id);
 		this.getUpdateNode=function(){return this.domNode.getElementsByClassName("timer-left")[0];};
 		this.getDomNode=function(){return this.domNode;};
 		this.updateTimer=timers.updateTimerInstance;
@@ -71,7 +73,7 @@ var timers={
 		
 		//create title element
 		var timerTitle=document.createElement('h2');
-		timerTitle.innerHTML=title;
+		timerTitle.textContent=title;
 		
 		//countdown display element
 		var timerDisplay=document.createElement('div');
@@ -80,10 +82,10 @@ var timers={
 		//timer end info
 		var timerInfo=document.createElement('span');
 		timerInfo.setAttribute('class','timer-info');
-		timerInfo.innerHTML='left until';
+		timerInfo.textContent='left until';
 		timerInfo.appendChild(document.createElement('span'));
 		timerInfo.childNodes[1].setAttribute('style','float:right;');
-		timerInfo.childNodes[1].innerHTML=timers.pad(end.getDate(),'0',2)+'.'+timers.pad((end.getMonth()+1),'0',2)+'.'+end.getFullYear()+' '+timers.pad(end.getHours(),'0',2)+':'+timers.pad(end.getMinutes(),'0',2);
+		timerInfo.childNodes[1].textContent=timers.pad(end.getDate(),'0',2)+'.'+timers.pad((end.getMonth()+1),'0',2)+'.'+end.getFullYear()+' '+timers.pad(end.getHours(),'0',2)+':'+timers.pad(end.getMinutes(),'0',2);
 		
 		//cram it all together
 		timerRoot.childNodes[0].appendChild(timerTitle);
@@ -101,7 +103,7 @@ var timers={
 		
 		//display end message if needed
 		if(timeLeft<0){
-			updateTarget.innerHTML=this.message;
+			updateTarget.textContent=this.message;
 		}
 		else{
 			//get unit mode
@@ -128,11 +130,11 @@ var timers={
 				case "seconds":
 					//just use whats left
 					timeString+=timers.pad(timeLeft,'0',2);
-					updateTarget.innerHTML=timeString;
+					updateTarget.textContent=timeString;
 					break;
 				default:
 					//yay you edited the dropdown. pretty cool guy.
-					updateTarget.innerHTML="You broke it.";
+					updateTarget.textContent="You broke it.";
 			}
 		}
 	},

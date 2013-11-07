@@ -6,6 +6,7 @@
 		<link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" type="text/css" href="static/timers.css" />
 		<script type="text/javascript" src="static/ajax.js"></script>
+		<script type="text/javascript" src="static/cookies.js"></script>
 		<script type="text/javascript" src="static/timers.js"></script>
 		<script type="text/javascript" src="static/glue.js"></script>
 		<script type="text/javascript" src="static/plusone.js"></script>
@@ -36,7 +37,7 @@
 				<br/>
 				<em>API Status:</em><br/>
 				<div id="status-info">Waiting...</div><br/>
-				<br/>
+				<input type="checkbox" id="selected-only" onClick="timerGlue.selectedOnly();" /><label for="hide-selected">Selected only</label><br/>
 			</div>
 		</div>
 		
