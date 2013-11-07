@@ -20,7 +20,10 @@
 			<span style="position:absolute;right:0.5em;text-align:center;">
 				Since ancient times, people have used timers. 
 				Now you can, too! <br /> With the magical timers of <em>timers.kitinfo.de</em><br />
-				<span style="float:right;">Brought to you by <a href="http://kitinfo.de/">#kitinfo</a></span>
+				<div style="float:right;text-align:right;">
+					Brought to you by <a href="http://kitinfo.de/">#kitinfo</a><br/>
+					<span style="font-size:80%;">Source available <a href="https://github.com/kitinfo/timers">via Github</a></span>
+				</div>
 			</span>
 			<h1>Timers</h1><br/>
 			<div style="padding-top:0.2em;float:left;position:absolute;">
@@ -37,6 +40,8 @@
 				<br/>
 				<em>API Status:</em><br/>
 				<div id="status-info">Waiting...</div><br/>
+				<br/>
+				<em id="click-action"></em><br/>
 				<input type="checkbox" id="selected-only" onClick="timerGlue.selectedOnly();" /><label for="hide-selected">Selected only</label><br/>
 			</div>
 		</div>

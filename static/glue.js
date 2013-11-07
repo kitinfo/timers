@@ -106,6 +106,14 @@ var timerGlue={
 		catch(e){
 			var selectedTimers=[];
 		}
+		
+		if(selectionMode){
+			document.getElementById("click-action").textContent="Clicking a timer hides it";
+		}
+		else{
+			document.getElementById("click-action").textContent="Clicking a timer selects it";
+		}
+		
 		//apply styles
 		timers.instances.forEach(function(i){
 			if(selectionMode){
