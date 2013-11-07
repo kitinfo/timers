@@ -75,7 +75,7 @@ var timerGlue={
 		}
 		selectedTimers=[];
 		
-		var selectedJSON=cookies.getCookie("selectedTimers");
+		var selectedJSON=cookies.getCookie("selectedTimers")||"[]";
 		if(selectedJSON){
 			try{
 				selectedTimers=JSON.parse(selectedJSON);
@@ -99,7 +99,7 @@ var timerGlue={
 	},
 	applyGlobalState:function(){
 		var selectionMode=cookies.getCookie("selectedOnly")=="true"?true:false;
-		var selectedJSON=cookies.getCookie("selectedTimers");
+		var selectedJSON=cookies.getCookie("selectedTimers")||"[]";
 		try{
 			var selectedTimers=JSON.parse(selectedJSON);
 		}
