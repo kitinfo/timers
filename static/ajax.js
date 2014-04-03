@@ -2,6 +2,12 @@
 	The awesome	
 	CodeBlue pseudo-cross-browser XHR/AJAX Code Library
 	
+	This program is free software. It comes without any warranty, to
+	the extent permitted by applicable law. You can redistribute it
+	and/or modify it under the terms of the Do What The Fuck You Want
+	To Public License, Version 2, as published by Sam Hocevar and
+	reproduced below.
+
 	DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
 	Version 2, December 2004 
 
@@ -59,7 +65,7 @@ var ajax={
 		Calls /readyfunc/ with the request as parameter upon completion (readyState == 4)
 		
 		/payload/ should contain the data to be POSTed in the format specified by contentType,
-		by defualt form-urlencoded
+		by default form-urlencoded
 		
 		
 	*/
