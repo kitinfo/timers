@@ -36,7 +36,7 @@ var timerGlue={
 	},
 
 	loadPersistentData:function(){
-		//get hidden timers from cookie
+		//get selected timers from cookie
 		var storedJSON=cookies.getCookie("selection")||"[]";
 		var storedMode=cookies.getCookie("currentMode")||"\"all\"";
 		try{
@@ -49,6 +49,19 @@ var timerGlue={
 			cookies.setCookie("currentMode", "\"all\"");
 			var stored=[];
 			var mode="all";
+		}
+
+		//remove expired timers from selections
+		var activeTimers=[];
+		timers.instances.forEach(function(t){
+			activeTimers.push(parseInt(t.id));
+		});
+
+		//TODO test this
+		for(var i=stored.length;i>=0;i--){
+			if(activeTimers.indexOf(stored[i])<0){
+				stored.splice(i,1);
+			}
 		}
 
 		//get stuff from url

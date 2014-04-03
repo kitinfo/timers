@@ -17,36 +17,45 @@
 	</head>
 	<body onload="timerGlue.init();">
 		<div id="head">
-			<span style="position:absolute;right:0.5em;text-align:center;">
-				Since ancient times, people have used timers. 
-				Now you can, too! <br /> With the magical timers of <em>timers.kitinfo.de</em><br />
-				<div style="float:right;text-align:right;">
-					Brought to you by <a href="http://kitinfo.de/">#kitinfo</a><br/>
-					<span style="font-size:80%;">Source available <a href="https://github.com/kitinfo/timers">via Github</a></span>
+			<div id="head-bar">
+				<div class="head-block" id="intro-text">
+					Since ancient times, people have used timers. 
+					Now you can, too! <br /> With the magical timers of <em>timers.kitinfo.de</em><br />
+					<div style="float:right;text-align:right;">
+						Brought to you by <a href="http://kitinfo.de/">#kitinfo</a><br/>
+						<span style="font-size:80%;">Source available <a href="https://github.com/kitinfo/timers">via Github</a></span>
+					</div>
 				</div>
-			</span>
-			<h1>Timers</h1><br/>
-			<div style="padding-top:0.2em;float:left;position:absolute;">
-				Max. Unit<br />
-				<select id="maxunit">
-					<option value="days" selected>Days</option>
-					<option value="hours">Hours</option>
-					<option value="minutes">Minutes</option>
-					<option value="seconds">Seconds</option>
-				</select>
-				<br />
-				<br />
-				<div class="g-plusone" data-size="tall" data-height="24" data-annotation="none" data-href="http://timers.kitinfo.de/"><a style="text-decoration:none;" onClick="enablePlusOne();" href="#">Enable +1</a></div>
-				<br/>
-				<em>API Status:</em><br/>
-				<div id="status-info">Waiting...</div><br/>
-				<br/>
-				<em>Display mode</em><br/>
-				<select id="displaymode" onchange="timerGlue.modeSelectorChange();">
-					<option value="all" selected>Show all</option>
-					<option value="positive">Show selected</option>
-					<option value="negative">Hide selected</option>
-				</select>
+
+				<h1 class="head-block">Timers</h1>
+
+				<div class="head-block">
+					Max. Unit<br />
+					<select id="maxunit">
+						<option value="days" selected>Days</option>
+						<option value="hours">Hours</option>
+						<option value="minutes">Minutes</option>
+						<option value="seconds">Seconds</option>
+					</select>
+				</div>
+
+				<div class="head-block">
+					<em>Display mode</em><br/>
+					<select id="displaymode" onchange="timerGlue.modeSelectorChange();">
+						<option value="all" selected>Show all</option>
+						<option value="positive">Show selected</option>
+						<option value="negative">Hide selected</option>
+					</select>
+				</div>
+
+				<div class="head-block">
+					<em>API Status:</em><br/>
+					<span id="status-info">Waiting...</span>
+				</div>
+
+				<div class="head-block">
+					<div class="g-plusone" data-size="tall" data-height="24" data-annotation="none" data-href="http://timers.kitinfo.de/"><a style="text-decoration:none;" onClick="enablePlusOne();" href="#">Enable +1</a></div>
+				</div>
 			</div>
 		</div>
 		
