@@ -8,7 +8,7 @@
 		<script type="text/javascript" src="static/ajax.js"></script>
 		<script type="text/javascript" src="static/cookies.js"></script>
 		<script type="text/javascript" src="static/timers.js"></script>
-		<script type="text/javascript" src="static/glue.js"></script>
+		<script type="text/javascript" src="static/glue2.js"></script>
 		<script type="text/javascript" src="static/plusone.js"></script>
 		<meta name="description" content="KITInfo Timers - Countdowns zu Klausuren & Events für Infos am KIT." />
 		<meta name="keywords" content="kit, informatik, timer, zeit, klausuren, irc, chat, kitinfo" />
@@ -41,8 +41,12 @@
 				<em>API Status:</em><br/>
 				<div id="status-info">Waiting...</div><br/>
 				<br/>
-				<em id="click-action"></em><br/>
-				<input type="checkbox" id="selected-only" onClick="timerGlue.selectedOnly();" /><label for="hide-selected">Selected only</label><br/>
+				<em>Display mode</em><br/>
+				<select id="displaymode" onchange="timerGlue.modeSelectorChange();">
+					<option value="all" selected>Show all</option>
+					<option value="positive">Show selected</option>
+					<option value="negative">Hide selected</option>
+				</select>
 			</div>
 		</div>
 		

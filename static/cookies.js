@@ -20,13 +20,13 @@
 
 var cookies={
 	setCookie:function(name,value,expiry){
-		document.cookie=name+"="+escape(value)+(expiry==undefined?"":"; expires="+expiry.toUTCString());
+		document.cookie=name+"="+encodeURI(value)+(expiry==undefined?"":"; expires="+expiry.toUTCString());
 	},
 	getCookie:function(name){
 		var cookies=document.cookie.split("; ");
 		for(var i=0;i<cookies.length;i++){
 			if(cookies[i].indexOf(name+"=")==0){
-				return unescape(cookies[i].substring(name.length+1));
+				return decodeURI(cookies[i].substring(name.length+1));
 			}
 		}
 		return false;
