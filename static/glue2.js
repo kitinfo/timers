@@ -26,7 +26,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 */
 
 var timerGlue={
-	apiUrl:"http://api.kitinfo.de/timers/",
+	apiUrl:"//api.kitinfo.de/timers/",
 	selectedTimers:[],
 	persist:true,
 	showMode:"all", /*positive, negative*/
