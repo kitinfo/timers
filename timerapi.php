@@ -44,7 +44,7 @@
 	
 	header("Access-Control-Allow-Origin: *");
 	if(isset($_GET["ics"])){
-		#header("Content-type: text/calendar");
+		header("Content-type: text/calendar");
 		print("BEGIN:VCALENDAR\r\n");
 		print("VERSION:2.0\r\n");
 		print("PRODID:-//kitinfo//timers api//EN\r\n");
