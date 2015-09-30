@@ -44,26 +44,27 @@
 	
 	header("Access-Control-Allow-Origin: *");
 	if(isset($_GET["ics"])){
-		header("Content-type: text/calendar");
-		?>
-BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//kitinfo//timers api//EN
-CALSCALE:GREGORIAN
-<?php
+		#header("Content-type: text/calendar");
+		print("BEGIN:VCALENDAR\r\n");
+		print("VERSION:2.0\r\n");
+		print("PRODID:-//kitinfo//timers api//EN\r\n");
+		print("CALSCALE:GREGORIAN\r\n");
 		foreach($retVal["timers"] as $timer){
-?>
-BEGIN:VEVENT
-DTSTART:<?php print($timer["year"].str_pad($timer["month"], 2, "0").str_pad($timer["day"], 2, "0")."T".str_pad($timer["hour"], 2, "0").str_pad($timer["minute"], 2, "0")."00\n"); ?>
-UID:<?php print($ICAL_TAG."-".$timer["id"]."\n"); ?>
-DTSTAMP:<?php print(date('Ymd\THis\Z')."\n"); ?>
-DESCRIPTION:<?php print($timer["event"]."\n"); ?>
-END:VEVENT
-<?php
+			print("BEGIN:VEVENT\r\n");
+			print("DTSTART:".
+				$timer["year"].
+				str_pad($timer["month"], 2, "0", STR_PAD_LEFT).
+				str_pad($timer["day"], 2, "0", STR_PAD_LEFT).
+				"T".
+				str_pad($timer["hour"], 2, "0", STR_PAD_LEFT).
+				str_pad($timer["minute"], 2, "0", STR_PAD_LEFT).
+				"00\r\n");
+			print("UID:".$ICAL_TAG."-".$timer["id"]."\r\n");
+			print("DTSTAMP:".date('Ymd\THis\Z')."\r\n");
+			print("DESCRIPTION:".$timer["event"]."\r\n");
+			print("END:VEVENT\r\n");
 		}
-?>
-END:VCALENDAR
-		<?php
+		print("END:VCALENDAR");
 	}
 	else{
 		header("Content-type: application/json");
