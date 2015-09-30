@@ -61,7 +61,7 @@
 				"00\r\n");
 			print("UID:".$ICAL_TAG."-".$timer["id"]."\r\n");
 			print("DTSTAMP:".date('Ymd\THis\Z')."\r\n");
-			print("DESCRIPTION:".$timer["event"]."\r\n");
+			print("SUMMARY:".$timer["event"]."\r\n");
 			print("END:VEVENT\r\n");
 		}
 		print("END:VCALENDAR");
