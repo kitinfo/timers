@@ -24,10 +24,14 @@
 		0. You just DO WHAT THE FUCK YOU WANT TO.
 	*/
 
-	$db=new PDO("sqlite:/var/www/databases/timers.db3");
+	//YOUR INSTANCE SETTINGS HERE
+	$ICAL_TAG = "my-timers"; //Change this to avoid ICS conflicts between instances
+	$db = new PDO("sqlite:/var/www/databases/timers.db3");
+	//END OF SETTINGS
+
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
 	
-	$retVal["status"]="ok";
+	$retVal["status"] = "ok";
 	
 	$STMT=$db->query("SELECT * FROM active WHERE 1");
 	if($STMT!==FALSE){
@@ -38,7 +42,31 @@
 		$retVal["status"]="Failed to create statement";
 	}
 	
-	header("Content-type: application/json");
 	header("Access-Control-Allow-Origin: *");
-	print(json_encode($retVal));
+	if(isset($_GET["ics"])){
+		header("Content-type: text/calendar");
+		?>
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//kitinfo//timers api//EN
+CALSCALE:GREGORIAN
+<?php
+		foreach($retVal["timers"] as $timer){
+?>
+BEGIN:VEVENT
+DTSTART:<?php print($timer["year"].str_pad($timer["month"], 2, "0").str_pad($timer["day"], 2, "0")."T".str_pad($timer["hour"], 2, "0").str_pad($timer["minute"], 2, "0")."00\n"); ?>
+UID:<?php print($ICAL_TAG."-".$timer["id"]."\n"); ?>
+DTSTAMP:<?php print(date('Ymd\THis\Z')."\n"); ?>
+DESCRIPTION:<?php print($timer["event"]."\n"); ?>
+END:VEVENT
+<?php
+		}
+?>
+END:VCALENDAR
+		<?php
+	}
+	else{
+		header("Content-type: application/json");
+		print(json_encode($retVal));
+	}
 ?>
