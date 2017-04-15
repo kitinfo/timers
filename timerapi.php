@@ -45,13 +45,31 @@
 	header("Access-Control-Allow-Origin: *");
 	if(isset($_GET["ics"])){
 		header("Content-type: text/calendar");
-		print("BEGIN:VCALENDAR\r\n");
-		print("VERSION:2.0\r\n");
-		print("PRODID:-//kitinfo//timers api//EN\r\n");
-		print("CALSCALE:GREGORIAN\r\n");
+		print("BEGIN:VCALENDAR\r\n" .
+			"VERSION:2.0\r\n" .
+			"PRODID:-//kitinfo//timers api//EN\r\n" .
+			"BEGIN:VTIMEZONE\r\n" .
+			"TZID:Europe/Berlin\r\n" .
+			"X-LIC-LOCATION:Europe/Berlin\r\n" .
+			"BEGIN:DAYLIGHT\r\n" .
+			"TZOFFSETFROM:+0100\r\n" .
+			"TZOFFSETTO:+0200\r\n" .
+			"TZNAME:CEST\r\n" .
+			"DTSTART:19700329T020000\r\n" .
+			"RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=-1SU;BYMONTH=3\r\n" .
+			"END:DAYLIGHT\r\n" .
+			"BEGIN:STANDARD\r\n" .
+			"TZOFFSETFROM:+0200\r\n" .
+			"TZOFFSETTO:+0100\r\n" .
+			"TZNAME:CET\r\n" .
+			"DTSTART:19701025T030000\r\n" .
+			"RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=-1SU;BYMONTH=10\r\n" .
+			"END:STANDARD\r\n" .
+			"END:VTIMEZONE\r\n" .
+			"CALSCALE:GREGORIAN\r\n");
 		foreach($retVal["timers"] as $timer){
 			print("BEGIN:VEVENT\r\n");
-			print("DTSTART:".
+			print("DTSTART;TZID=Europe/Berlin:".
 				$timer["year"].
 				str_pad($timer["month"], 2, "0", STR_PAD_LEFT).
 				str_pad($timer["day"], 2, "0", STR_PAD_LEFT).
